@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the React app build directory
-app.use(express.static('../dist/public'));
+app.use(express.static(path.join(__dirname, '../dist/public')));
 
 // Routes
 app.use('/api', contactRouter);
