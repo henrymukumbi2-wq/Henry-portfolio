@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the React app build directory
-const staticPath = path.join(__dirname, '../dist/public');
+const staticPath = path.join(__dirname, '../dist');
 console.log('Static files path:', staticPath);
 console.log('Static path exists:', require('fs').existsSync(staticPath));
 
@@ -29,7 +29,7 @@ app.use('/api', contactRouter);
 
 // Catch all handler: send back React's index.html file for client-side routing
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // Health check
