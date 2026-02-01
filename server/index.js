@@ -18,7 +18,11 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, '../dist/public')));
+const staticPath = path.join(__dirname, '../dist/public');
+console.log('Static files path:', staticPath);
+console.log('Static path exists:', require('fs').existsSync(staticPath));
+
+app.use(express.static(staticPath));
 
 // Routes
 app.use('/api', contactRouter);
@@ -33,6 +37,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
