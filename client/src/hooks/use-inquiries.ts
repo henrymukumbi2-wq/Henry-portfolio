@@ -1,28 +1,24 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, type InsertInquiry } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
 
 export function useCreateInquiry() {
   const { toast } = useToast();
-  
+
   return useMutation({
-    mutationFn: async (data: InsertInquiry) => {
-      const validated = api.inquiries.create.input.parse(data);
-      const res = await fetch(api.inquiries.create.path, {
-        method: api.inquiries.create.method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validated),
+    mutationFn: async (data: any) => {
+      const response = await fetch('http://localhost:3001/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
-      if (!res.ok) {
-        if (res.status === 400) {
-          const error = api.inquiries.create.responses[400].parse(await res.json());
-          throw new Error(error.message);
-        }
+      if (!response.ok) {
         throw new Error('Failed to send message');
       }
-      
-      return api.inquiries.create.responses[201].parse(await res.json());
+
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -34,7 +30,7 @@ export function useCreateInquiry() {
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
     }

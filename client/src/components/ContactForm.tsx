@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertInquirySchema, type InsertInquiry } from "@shared/schema";
+import { z } from "zod";
 import { useCreateInquiry } from "@/hooks/use-inquiries";
+
+const insertInquirySchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
+  message: z.string().min(1, "Message is required"),
+});
+
+type InsertInquiry = z.infer<typeof insertInquirySchema>;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
