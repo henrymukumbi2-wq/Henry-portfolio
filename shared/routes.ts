@@ -36,3 +36,7 @@ export function buildUrl(path: string, params?: Record<string, string | number>)
   }
   return url;
 }
+
+export type InsertInquiry = z.infer<typeof api.inquiries.create.input>;
+export type InquiryResponse = z.infer<typeof api.inquiries.create.responses[201]>;
+export type ValidationError = z.infer<typeof errorSchemas.validation>;
